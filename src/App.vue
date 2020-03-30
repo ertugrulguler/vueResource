@@ -11,7 +11,9 @@
       <button class="btn btn-success" @click="getUsers">Verileri Getir</button>
       <hr>
       <ul class="list-group">
-        <li class="list-group-item" v-for="user in userList"> {{user.userName}}</li>
+        <li class="list-group-item" v-for="user in userList"> 
+          <span>{{user.data.userName}}</span> <button class="btn btn-xs btn-danger" @click="deleteUser(user.key)">Sil</button>
+          </li>
       </ul>
     </div>
   </div>
@@ -29,19 +31,28 @@ export default {
   methods:{
     saveUser(){
       // this.$http.post('https://vuejs-vueresource-61b27.firebaseio.com/users.json',{userName:this.userName})
-      this.$http.post('',{userName:this.userName})
+      this.$http.post('users.json',{userName:this.userName})
       .then((response)=> {
         console.log(response);
       });
     },
     getUsers(){
       // this.$http.get('https://vuejs-vueresource-61b27.firebaseio.com/users.json')
-      this.$http.get()
+      this.$http.get('users.json')
       .then((response) => {
         let data = response.data;
         for(let key in data){
-          this.userList.push(data[key]);
+          this.userList.push({
+            key:key,
+            data:data[key]
+          });
         }
+      })
+    },
+    deleteUser(userKey){
+      this.$http.delete('users/'+userKey+'.json')
+      .then(response =>{
+        console.log(response);
       })
     }
   }
