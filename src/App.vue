@@ -31,14 +31,16 @@ export default {
   methods:{
     saveUser(){
       // this.$http.post('https://vuejs-vueresource-61b27.firebaseio.com/users.json',{userName:this.userName})
-      this.$http.post('users.json',{userName:this.userName})
+      // this.$http.post('users.json',{userName:this.userName})
+      this.$resource('users.json').save({},{userName:this.userName})  //birinci parametre varsa options
       .then((response)=> {
         console.log(response);
       });
     },
     getUsers(){
       // this.$http.get('https://vuejs-vueresource-61b27.firebaseio.com/users.json')
-      this.$http.get('users.json')
+      // this.$http.get('users.json')
+      this.$resource('users.json').get()
       .then((response) => {
         let data = response.data;
         for(let key in data){
@@ -50,7 +52,8 @@ export default {
       })
     },
     deleteUser(userKey){
-      this.$http.delete('users/'+userKey+'.json')
+      // this.$http.delete('users/'+userKey+'.json')
+      this.$resource('users/'+userKey+'.json').delete()
       .then(response =>{
         console.log(response);
       })
